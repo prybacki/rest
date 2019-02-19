@@ -64,15 +64,4 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>end-to-end-test</id>
-            <properties>
-                <junit.category>com.rybacki.melements.e2e.End2EndTest</junit.category>
-                <skip.unit.tests>true</skip.unit.tests>
-                <activeByDefault>true</activeByDefault>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>

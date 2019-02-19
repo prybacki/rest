@@ -22,7 +22,7 @@ public class GitHubRestClient {
 
     public GitHubRepositoryDetails getRepositoryDetails(String owner, String repositoryName) throws HttpStatusCodeException, ResourceAccessException {
         String url = generateURL(owner, repositoryName);
-        return restTemplate.getForObject(url, GitHubRepositoryDetails.class, new GitHubRepositoryDetails());
+        return restTemplate.getForObject(url, GitHubRepositoryDetails.class);
     }
 
     private String generateURL(String owner, String repositoryName) {

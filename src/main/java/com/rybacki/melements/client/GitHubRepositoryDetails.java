@@ -21,9 +21,6 @@ public class GitHubRepositoryDetails {
     @JsonProperty("created_at")
     private LocalDate createdAt;
 
-    public GitHubRepositoryDetails() {
-    }
-
     public GitHubRepositoryDetails(String fullName, String description, String cloneUrl, Integer stars, LocalDate createdAt) {
         this.fullName = fullName;
         this.description = description;

@@ -49,8 +49,7 @@ public class RestServerController {
     //javadocki
     //opis
 //poprawic nazwy metod
-
-    //testt ResourceAccessException lub wywalic
+//problem z NO_CONTENT
     //dorobic parametry do testow mappera z localami
     //dodac anotacje sortuajaca correct response zgodnie z wymaganiami
     //dodac osobny profil na testy e2e

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
@@ -56,7 +57,7 @@ public class End2EndTest {
     public void shouldReturnCorrectResponse() {
         mockServer.expect(requestTo("https://api.github.com/repos/octocat/boysenberry-repo-1")).andRespond(withSuccess(RESPONSE, MediaType.APPLICATION_JSON_UTF8));
 
-        CorrectResponse correctResponse = new CorrectResponse(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT_US);
+        CorrectResponse expectedResponse = new CorrectResponse(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT_US);
         EntityExchangeResult<CorrectResponse> result = webClient.get()
                 .uri("/repositories/octocat/boysenberry-repo-1")
                 .exchange().expectStatus().isOk()
@@ -64,14 +65,14 @@ public class End2EndTest {
 
         mockServer.verify();
 
-        assertEquals(correctResponse, result.getResponseBody());
+        assertEquals(expectedResponse, result.getResponseBody());
     }
 
     @Test
     public void shouldReturnCorrectResponseWhenIsSpecifiedLocale() {
         mockServer.expect(requestTo("https://api.github.com/repos/octocat/boysenberry-repo-1")).andRespond(withSuccess(RESPONSE, MediaType.APPLICATION_JSON_UTF8));
 
-        CorrectResponse correctResponse = new CorrectResponse(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT_DE);
+        CorrectResponse expectedResponse = new CorrectResponse(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT_DE);
         EntityExchangeResult<CorrectResponse> result = webClient.get()
                 .uri("/repositories/octocat/boysenberry-repo-1")
                 .header("Accept-Language", "de")
@@ -80,13 +81,13 @@ public class End2EndTest {
 
         mockServer.verify();
 
-        assertEquals(correctResponse, result.getResponseBody());
+        assertEquals(expectedResponse, result.getResponseBody());
     }
 
     @Test
     public void shouldErrorResponseWhenServerError() {
         mockServer.expect(requestTo("https://api.github.com/repos/octocat/boysenberry-repo-1")).andRespond(withServerError());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         EntityExchangeResult<ErrorResponse> result = webClient.get()
                 .uri("/repositories/octocat/boysenberry-repo-1")
@@ -95,64 +96,62 @@ public class End2EndTest {
 
         mockServer.verify();
 
-        assertEquals(errorResponse, result.getResponseBody());
+        assertEquals(expectedResponse, result.getResponseBody());
     }
 
     @Test
     public void shouldErrorResponseWhenBadRequest() {
         mockServer.expect(requestTo("https://api.github.com/repos/octocat/boysenberry-repo-1")).andRespond(withBadRequest());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), HttpStatus.BAD_REQUEST.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), HttpStatus.BAD_REQUEST.value());
 
         EntityExchangeResult<ErrorResponse> result = webClient.get()
                 .uri("/repositories/octocat/boysenberry-repo-1")
-                .exchange().expectStatus().is4xxClientError()
+                .exchange().expectStatus().isBadRequest()
                 .expectBody(ErrorResponse.class).returnResult();
 
         mockServer.verify();
 
-        assertEquals(errorResponse, result.getResponseBody());
-    }
-
-//    TODO sprawdzic w necie jak obslugiwac wartosci null, jak je przemapowac na error response
-    @Test
-    public void shouldErrorResponseWhenNoContent() {
-        mockServer.expect(requestTo("https://api.github.com/repos/octocat/boysenberry-repo-1")).andRespond(withNoContent());
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NO_CONTENT.getReasonPhrase(), HttpStatus.NO_CONTENT.value());
-
-        EntityExchangeResult<ErrorResponse> result = webClient.get()
-                .uri("/repositories/octocat/boysenberry-repo-1")
-                .exchange().expectStatus().is2xxSuccessful()
-                .expectBody(ErrorResponse.class).returnResult();
-
-        mockServer.verify();
-
-        assertEquals(errorResponse, result.getResponseBody());
+        assertEquals(expectedResponse, result.getResponseBody());
     }
 
     @Test
     public void shouldErrorResponseWhenNotFound() {
         mockServer.expect(requestTo("https://api.github.com/repos/octocat/boysenberry-repo-1")).andRespond(withStatus(HttpStatus.NOT_FOUND));
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.getReasonPhrase(), HttpStatus.NOT_FOUND.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.NOT_FOUND.getReasonPhrase(),
+                HttpStatus.NOT_FOUND.value());
 
         EntityExchangeResult<ErrorResponse> result = webClient.get()
-                .uri("/repositories/octocat/boysenberry-repo-2")
-                .exchange().expectStatus().is4xxClientError()
+                .uri("/repositories/octocat/boysenberry-repo-1")
+                .exchange().expectStatus().isNotFound()
                 .expectBody(ErrorResponse.class).returnResult();
 
         mockServer.verify();
 
-        assertEquals(errorResponse, result.getResponseBody());
+        assertEquals(expectedResponse, result.getResponseBody());
     }
 
     @Test
     public void shouldErrorResponseWhenMethodIsNotSupported() {
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), HttpStatus.METHOD_NOT_ALLOWED.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), HttpStatus.METHOD_NOT_ALLOWED.value());
 
         EntityExchangeResult<ErrorResponse> result = webClient.post()
                 .uri("/repositories/octocat/boysenberry-repo-1")
                 .exchange().expectStatus().is4xxClientError()
                 .expectBody(ErrorResponse.class).returnResult();
 
-        assertEquals(errorResponse, result.getResponseBody());
+        assertEquals(expectedResponse, result.getResponseBody());
+    }
+
+    @Test
+    public void shouldErrorResponseWhenResourceAccessException() {
+        mockServer.expect(requestTo("https://api.github.com/repos/octocat/boysenberry-repo-1")).andRespond((response) -> { throw new ResourceAccessException("Connection reset");});
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        EntityExchangeResult<ErrorResponse> result = webClient.get()
+                .uri("/repositories/octocat/boysenberry-repo-1")
+                .exchange().expectStatus().is5xxServerError()
+                .expectBody(ErrorResponse.class).returnResult();
+
+        assertEquals(expectedResponse, result.getResponseBody());
     }
 }

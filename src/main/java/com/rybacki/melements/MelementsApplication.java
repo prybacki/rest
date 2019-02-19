@@ -9,6 +9,5 @@ public class MelementsApplication {
     public static void main(String[] args) {
         SpringApplication.run(MelementsApplication.class, args);
     }
-
 }
 

@@ -1,25 +1,26 @@
 package com.rybacki.melements.client;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class GitHubRestClient {
 
-//    @Value("${github.endpoint}")
     final static String GITHUB_ENDPOINT = "api.github.com";
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
-    public GitHubRestClient(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder.build();
     }
 
-    public GitHubRepositoryDetails getRepositoryDetails(String owner, String repositoryName) throws HttpClientErrorException, ResourceAccessException {
+    public GitHubRepositoryDetails getRepositoryDetails(String owner, String repositoryName) throws HttpStatusCodeException, ResourceAccessException {
         String url = generateURL(owner, repositoryName);
         return restTemplate.getForObject(url, GitHubRepositoryDetails.class, new GitHubRepositoryDetails());
     }

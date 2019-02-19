@@ -11,10 +11,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
 
-@org.mapstruct.Mapper(componentModel="spring")
+@org.mapstruct.Mapper(componentModel = "spring")
 public interface Mapper {
 
-    Locale defaultLocale = new Locale.Builder().setLanguage("en").setRegion("US").build();
+    Locale defaultLocale = Locale.US;
 
     @Mappings({
             @Mapping(source = "fullName", target = "fullName"),
@@ -26,7 +26,7 @@ public interface Mapper {
     CorrectResponse gitHubResponseToRestServiceResponse(GitHubRepositoryDetails gitHubRepositoryDetails, @Context Locale locale);
 
     default String convertDate(LocalDate gitHubDate, Locale locale) {
-        if (locale == null){
+        if (locale == null) {
             locale = defaultLocale;
         }
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);

@@ -44,20 +44,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.openejb</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>6.0-6</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.9.6</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-            <scope>test</scope>
+            <version>2.9.8</version>
         </dependency>
     </dependencies>
 
@@ -69,5 +63,16 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>end-to-end-test</id>
+            <properties>
+                <junit.category>com.rybacki.melements.e2e.End2EndTest</junit.category>
+                <skip.unit.tests>true</skip.unit.tests>
+                <activeByDefault>true</activeByDefault>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

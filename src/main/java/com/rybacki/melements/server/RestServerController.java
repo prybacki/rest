@@ -51,9 +51,7 @@ public class RestServerController {
 //poprawic nazwy metod
 //problem z NO_CONTENT
     //dorobic parametry do testow mappera z localami
-    //dodac anotacje sortuajaca correct response zgodnie z wymaganiami
     //dodac osobny profil na testy e2e
-    //lombok
     //przenisc default locale do propertisow
     //przenisc port na ktorym startuje do propertisow
 }

@@ -18,8 +18,9 @@ public class MapperTest {
     private static final Integer STARS = 0;
 
     private static final LocalDate CREATED_AT = LocalDate.of(2018, 05, 10);
-    private static final String EXPECTED_CREATED_AT_DE = "10.05.2018";
+    private static final String EXPECTED_CREATED_AT_GERMANY = "10.05.2018";
     private static final String EXPECTED_CREATED_AT_US = "May 10, 2018";
+    private static final String EXPECTED_CREATED_AT_FRANCE = "10 mai 2018";
 
     private MapperImpl sut;
 
@@ -29,30 +30,44 @@ public class MapperTest {
     }
 
     @Test
+    public void shouldReturnCorrectResponseWhenLocaleIsGermany() {
+        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT);
+
+        CorrectResponse expectedResponse = sut.gitHubResponseToRestServiceResponse(entity, Locale.GERMANY);
+
+        assertEquals("Incorrect full name", entity.getFullName(), expectedResponse.getFullName());
+        assertEquals("Incorrect description", entity.getDescription(), expectedResponse.getDescription());
+        assertEquals("Incorrect clone url", entity.getCloneUrl(), expectedResponse.getCloneUrl());
+        assertEquals("Incorrect stars", entity.getStars(), expectedResponse.getStars());
+        assertEquals("Incorrect created at (Germany locale)", EXPECTED_CREATED_AT_GERMANY,
+                expectedResponse.getCreatedAt());
+    }
+
+    @Test
     public void shouldReturnCorrectResponseWhenLocaleIsEs() {
         GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT);
 
-        CorrectResponse correctResponse = sut.gitHubResponseToRestServiceResponse(entity, Locale.GERMANY);
+        CorrectResponse expectedResponse = sut.gitHubResponseToRestServiceResponse(entity, Locale.FRANCE);
 
-        assertEquals("Incorrect full name", entity.getFullName(), correctResponse.getFullName());
-        assertEquals("Incorrect description", entity.getDescription(), correctResponse.getDescription());
-        assertEquals("Incorrect clone url", entity.getCloneUrl(), correctResponse.getCloneUrl());
-        assertEquals("Incorrect stars", entity.getStars(), correctResponse.getStars());
-        assertEquals("Incorrect created at (Germany locale)", EXPECTED_CREATED_AT_DE,
-                correctResponse.getCreatedAt());
+        assertEquals("Incorrect full name", entity.getFullName(), expectedResponse.getFullName());
+        assertEquals("Incorrect description", entity.getDescription(), expectedResponse.getDescription());
+        assertEquals("Incorrect clone url", entity.getCloneUrl(), expectedResponse.getCloneUrl());
+        assertEquals("Incorrect stars", entity.getStars(), expectedResponse.getStars());
+        assertEquals("Incorrect created at (Germany locale)", EXPECTED_CREATED_AT_FRANCE,
+                expectedResponse.getCreatedAt());
     }
 
     @Test
     public void shouldReturnCorrectResponseWhenLocaleIsNotSet() {
         GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT);
 
-        CorrectResponse correctResponse = sut.gitHubResponseToRestServiceResponse(entity, null);
+        CorrectResponse expectedResponse = sut.gitHubResponseToRestServiceResponse(entity, null);
 
-        assertEquals("Incorrect full name", entity.getFullName(), correctResponse.getFullName());
-        assertEquals("Incorrect description", entity.getDescription(), correctResponse.getDescription());
-        assertEquals("Incorrect clone url", entity.getCloneUrl(), correctResponse.getCloneUrl());
-        assertEquals("Incorrect stars", entity.getStars(), correctResponse.getStars());
+        assertEquals("Incorrect full name", entity.getFullName(), expectedResponse.getFullName());
+        assertEquals("Incorrect description", entity.getDescription(), expectedResponse.getDescription());
+        assertEquals("Incorrect clone url", entity.getCloneUrl(), expectedResponse.getCloneUrl());
+        assertEquals("Incorrect stars", entity.getStars(), expectedResponse.getStars());
         assertEquals("Incorrect created at (US locale)", EXPECTED_CREATED_AT_US,
-                correctResponse.getCreatedAt());
+                expectedResponse.getCreatedAt());
     }
 }

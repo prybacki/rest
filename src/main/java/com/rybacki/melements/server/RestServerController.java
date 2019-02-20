@@ -45,14 +45,14 @@ public class RestServerController {
 
 
     //TODO
-    //zrobic z endpointa propertisa
+
     //javadocki
     //opis
 //poprawic nazwy metod
 //problem z NO_CONTENT
-    //dorobic parametry do testow mappera z localami
-    //dodac osobny profil na testy e2e
 
+    //zrobic z endpointa propertisa
     //przenisc default locale do propertisow
     //przenisc port na ktorym startuje do propertisow
+    //formmater kodu nie działa
 }

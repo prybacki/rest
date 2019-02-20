@@ -102,7 +102,7 @@ public class End2EndTest {
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().is5xxServerError()
+                .exchange().expectStatus().isOk()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();
@@ -117,7 +117,7 @@ public class End2EndTest {
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().isBadRequest()
+                .exchange().expectStatus().isOk()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();
@@ -132,7 +132,7 @@ public class End2EndTest {
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().isNotFound()
+                .exchange().expectStatus().isOk()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();
@@ -164,7 +164,22 @@ public class End2EndTest {
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().is5xxServerError()
+                .exchange().expectStatus().isOk()
+                .expectBody(String.class).returnResult();
+
+        mockServer.verify();
+        assertEquals(jsonMapper.writeValueAsString(expectedResponse), result.getResponseBody());
+    }
+
+    @Test
+    public void shouldErrorResponseWhenNoContent() throws JsonProcessingException {
+        mockServer.expect(requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond(withStatus(HttpStatus.NO_CONTENT));
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.NO_CONTENT.getReasonPhrase(),
+                HttpStatus.NO_CONTENT.value());
+
+        EntityExchangeResult<String> result = webClient.get()
+                .uri(REQUEST_URL)
+                .exchange().expectStatus().isOk()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();

@@ -9,7 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,8 +38,12 @@ public class GitHubRestClientTest {
     }
 
     @Test
-    public void shouldReturnCorrectGItHubRepositoryUrl() {
-        client.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME);
+    public void shouldReturnCorrectGitHubRepositoryUrl() {
+        try {
+            client.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME);
+        }catch (HttpStatusCodeException ex){
+        }
+
 
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
         verify(template).getForObject(argument.capture(), ArgumentMatchers.<Class<GitHubRepositoryDetails>>any(),

@@ -37,21 +37,20 @@ public class RestServerController {
 
     @ExceptionHandler(HttpStatusCodeException.class)
     public ResponseEntity<ErrorResponse> onHttpClientErrorException(HttpStatusCodeException ex) {
-        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(ex.getStatusCode().getReasonPhrase(),
+        return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(ex.getStatusCode().getReasonPhrase(),
                 ex.getStatusCode().value()));
     }
 
     @ExceptionHandler(ResourceAccessException.class)
     public ResponseEntity<ErrorResponse> onResourceAccessException() {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 
 
     //TODO
     //javadocki
     //opis
-//poprawic nazwy metod
-//problem z NO_CONTENT
+    //poprawic nazwy metod
 
     //zrobic z endpointa propertisa
     //przenisc default locale do propertisow

@@ -45,7 +45,6 @@ public class RestServerController {
 
 
     //TODO
-
     //javadocki
     //opis
 //poprawic nazwy metod
@@ -54,5 +53,6 @@ public class RestServerController {
     //zrobic z endpointa propertisa
     //przenisc default locale do propertisow
     //przenisc port na ktorym startuje do propertisow
+
     //formmater kodu nie działa
 }

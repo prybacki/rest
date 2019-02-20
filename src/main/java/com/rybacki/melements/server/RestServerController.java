@@ -46,7 +46,6 @@ public class RestServerController {
         return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 
-    //przenisc default locale do propertisow
     //dodać test kolejności nodów w jsonie
 
 }

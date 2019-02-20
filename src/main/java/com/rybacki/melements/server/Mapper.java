@@ -14,8 +14,6 @@ import java.util.Locale;
 @org.mapstruct.Mapper(componentModel = "spring")
 public interface Mapper {
 
-    Locale defaultLocale = Locale.US;
-
     @Mappings({
             @Mapping(source = "fullName", target = "fullName"),
             @Mapping(source = "description", target = "description"),
@@ -28,9 +26,6 @@ public interface Mapper {
                                                         @Context Locale locale);
 
     default String formatDate(LocalDate gitHubDate, Locale locale) {
-        if (locale == null) {
-            locale = defaultLocale;
-        }
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
         return gitHubDate.format(pattern);
     }

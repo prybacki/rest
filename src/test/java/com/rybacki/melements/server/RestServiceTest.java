@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URI;
+import java.util.Locale;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
@@ -35,7 +36,7 @@ public class RestServiceTest {
 
     @Test
     public void shouldReturnCorrectGitHubRepositoryUrl() {
-        sut.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME, null);
+        sut.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME, Locale.US);
 
         ArgumentCaptor<URI> argument = ArgumentCaptor.forClass(URI.class);
         verify(client).getRepositoryDetails(argument.capture());

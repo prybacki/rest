@@ -17,6 +17,7 @@ public class RestService {
 
     private final GithubRestClient client;
     private final Mapper mapper;
+
     @Value("${github.endpoint}")
     private String githubEndpoint;
 

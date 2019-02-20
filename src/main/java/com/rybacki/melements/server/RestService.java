@@ -23,6 +23,7 @@ public class RestService {
     }
 
     public CorrectResponse getRepositoryDetails(String username, String repositoryName, Locale locale) throws HttpStatusCodeException, ResourceAccessException {
-        return mapper.gitHubResponseToRestServiceResponse(client.getRepositoryDetails(username, repositoryName), locale);
+        return mapper.gitHubResponseToRestServiceResponse(client.getRepositoryDetails(username, repositoryName),
+                locale);
     }
 }

@@ -31,7 +31,8 @@ public class MapperTest {
 
     @Test
     public void shouldReturnCorrectResponseWhenLocaleIsGermany() {
-        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT);
+        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
+                CREATED_AT);
 
         CorrectResponse expectedResponse = sut.gitHubResponseToRestServiceResponse(entity, Locale.GERMANY);
 
@@ -45,7 +46,8 @@ public class MapperTest {
 
     @Test
     public void shouldReturnCorrectResponseWhenLocaleIsEs() {
-        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT);
+        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
+                CREATED_AT);
 
         CorrectResponse expectedResponse = sut.gitHubResponseToRestServiceResponse(entity, Locale.FRANCE);
 
@@ -59,7 +61,8 @@ public class MapperTest {
 
     @Test
     public void shouldReturnCorrectResponseWhenLocaleIsNotSet() {
-        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS, CREATED_AT);
+        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
+                CREATED_AT);
 
         CorrectResponse expectedResponse = sut.gitHubResponseToRestServiceResponse(entity, null);
 

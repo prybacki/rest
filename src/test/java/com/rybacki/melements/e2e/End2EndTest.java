@@ -14,7 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -23,10 +22,10 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.client.ExpectedCount.never;
+import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
-import static org.springframework.test.web.client.ExpectedCount.once;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -98,7 +97,8 @@ public class End2EndTest {
     @Test
     public void shouldErrorResponseWhenServerError() throws JsonProcessingException {
         mockServer.expect(once(), requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond(withServerError());
-        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
@@ -110,9 +110,10 @@ public class End2EndTest {
     }
 
     @Test
-    public void shouldErrorResponseWhenBadRequest() throws JsonProcessingException  {
+    public void shouldErrorResponseWhenBadRequest() throws JsonProcessingException {
         mockServer.expect(once(), requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond(withBadRequest());
-        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), HttpStatus.BAD_REQUEST.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                HttpStatus.BAD_REQUEST.value());
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
@@ -139,9 +140,10 @@ public class End2EndTest {
     }
 
     @Test
-    public void shouldErrorResponseWhenMethodIsNotSupported() throws JsonProcessingException  {
+    public void shouldErrorResponseWhenMethodIsNotSupported() throws JsonProcessingException {
         mockServer.expect(never(), requestTo(MOCK_SERVER_REQUEST_URL)).andRespond(withBadRequest());
-        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), HttpStatus.METHOD_NOT_ALLOWED.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(),
+                HttpStatus.METHOD_NOT_ALLOWED.value());
 
         EntityExchangeResult<String> result = webClient.post()
                 .uri(REQUEST_URL)
@@ -154,8 +156,11 @@ public class End2EndTest {
 
     @Test
     public void shouldErrorResponseWhenResourceAccessException() throws JsonProcessingException {
-        mockServer.expect(once(), requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond((response) -> { throw new ResourceAccessException("Connection reset");});
-        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value());
+        mockServer.expect(once(), requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond((response) -> {
+            throw new ResourceAccessException("Connection reset");
+        });
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value());
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)

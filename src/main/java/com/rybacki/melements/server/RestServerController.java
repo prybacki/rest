@@ -24,18 +24,21 @@ public class RestServerController {
     }
 
     @GetMapping("/{owner}/{repositoryName}")
-    public CorrectResponse getRepositoryDetails(@PathVariable("owner") String owner, @PathVariable("repositoryName") String repositoryName, Locale locale) throws HttpClientErrorException {
+    public CorrectResponse getRepositoryDetails(@PathVariable("owner") String owner,
+                                                @PathVariable("repositoryName") String repositoryName, Locale locale) throws HttpClientErrorException {
         return service.getRepositoryDetails(owner, repositoryName, locale);
     }
 
-    @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.PATCH, RequestMethod.PUT, RequestMethod.TRACE})
+    @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.DELETE, RequestMethod.HEAD,
+            RequestMethod.OPTIONS, RequestMethod.PATCH, RequestMethod.PUT, RequestMethod.TRACE})
     public ResponseEntity<ErrorResponse> handleNotSupportMethod() {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), HttpStatus.METHOD_NOT_ALLOWED.value()));
     }
 
     @ExceptionHandler(HttpStatusCodeException.class)
     public ResponseEntity<ErrorResponse> onHttpClientErrorException(HttpStatusCodeException ex) {
-        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(ex.getStatusCode().getReasonPhrase(), ex.getStatusCode().value()));
+        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(ex.getStatusCode().getReasonPhrase(),
+                ex.getStatusCode().value()));
     }
 
     @ExceptionHandler(ResourceAccessException.class)

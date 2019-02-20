@@ -39,7 +39,9 @@ public class GitHubRestClientTest {
         client.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME);
 
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
-        verify(template).getForObject(argument.capture(), ArgumentMatchers.<Class<GitHubRepositoryDetails>>any(), any(GitHubRepositoryDetails.class));
-        assertEquals("https://" + GitHubRestClient.GITHUB_ENDPOINT + "/repos/octocat/boysenberry-repo-1", argument.getValue());
+        verify(template).getForObject(argument.capture(), ArgumentMatchers.<Class<GitHubRepositoryDetails>>any(),
+                any(GitHubRepositoryDetails.class));
+        assertEquals("https://" + GitHubRestClient.GITHUB_ENDPOINT + "/repos/octocat/boysenberry-repo-1",
+                argument.getValue());
     }
 }

@@ -21,9 +21,11 @@ public interface Mapper {
             @Mapping(source = "description", target = "description"),
             @Mapping(source = "cloneUrl", target = "cloneUrl"),
             @Mapping(source = "stars", target = "stars"),
-            @Mapping(target = "createdAt", expression = "java(convertDate(gitHubRepositoryDetails.getCreatedAt(), locale))")
+            @Mapping(target = "createdAt", expression = "java(convertDate(gitHubRepositoryDetails.getCreatedAt(), " +
+                    "locale))")
     })
-    CorrectResponse gitHubResponseToRestServiceResponse(GitHubRepositoryDetails gitHubRepositoryDetails, @Context Locale locale);
+    CorrectResponse gitHubResponseToRestServiceResponse(GitHubRepositoryDetails gitHubRepositoryDetails,
+                                                        @Context Locale locale);
 
     default String convertDate(LocalDate gitHubDate, Locale locale) {
         if (locale == null) {

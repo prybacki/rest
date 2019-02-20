@@ -7,6 +7,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.Locale;
@@ -15,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@Component
 public class RestServiceTest {
     private static String TEST_OWNER = "octocat";
     private static String TEST_REPOSITORY_NAME = "boysenberry-repo-1";
@@ -23,7 +25,7 @@ public class RestServiceTest {
     private GithubRestClient client;
 
     @Mock
-    private Mapper mapper;
+    private RestObjectMapper restObjectMapper;
 
     @Autowired
     @InjectMocks

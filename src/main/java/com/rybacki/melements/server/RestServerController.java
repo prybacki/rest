@@ -45,7 +45,4 @@ public class RestServerController {
     public ResponseEntity<ErrorResponse> onResourceAccessException() {
         return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
-
-    //TODO
-    //przeniesc metoda defaultowa z mappera interface do serwisu
 }

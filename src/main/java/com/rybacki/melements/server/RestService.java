@@ -16,20 +16,20 @@ import java.util.Locale;
 public class RestService {
 
     private final GithubRestClient client;
-    private final Mapper mapper;
+    private final RestObjectMapper myMapper;
 
     @Value("${github.endpoint}")
     private String githubEndpoint;
 
     @Autowired
-    public RestService(GithubRestClient client, Mapper mapper) {
+    public RestService(GithubRestClient client, RestObjectMapper myMapper) {
         this.client = client;
-        this.mapper = mapper;
+        this.myMapper = myMapper;
     }
 
-    public CorrectResponse getRepositoryDetails(String owner, String repositoryName, Locale locale) throws HttpStatusCodeException, ResourceAccessException {
+    CorrectResponse getRepositoryDetails(String owner, String repositoryName, Locale locale) throws HttpStatusCodeException, ResourceAccessException {
         URI uri = UriComponentsBuilder.newInstance().scheme("https").host(githubEndpoint).pathSegment("repos", owner,
                 repositoryName).build().toUri();
-        return mapper.gitHubResponseToRestServiceResponse(client.getRepositoryDetails(uri), locale);
+        return myMapper.gitHubResponseToRestServiceResponse(client.getRepositoryDetails(uri), locale);
     }
 }

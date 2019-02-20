@@ -31,7 +31,7 @@ public class RestServerController {
 
     @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.DELETE, RequestMethod.HEAD,
             RequestMethod.OPTIONS, RequestMethod.PATCH, RequestMethod.PUT, RequestMethod.TRACE})
-    public ResponseEntity<ErrorResponse> handleNotSupportMethod() {
+    public ResponseEntity<ErrorResponse> onNotSupportMethod() {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), HttpStatus.METHOD_NOT_ALLOWED.value()));
     }
 
@@ -45,12 +45,6 @@ public class RestServerController {
     public ResponseEntity<ErrorResponse> onResourceAccessException() {
         return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
-
-
-    //TODO
-    //javadocki
-    //opis
-    //poprawic nazwy metod
 
     //przenisc default locale do propertisow
     //dodać test kolejności nodów w jsonie

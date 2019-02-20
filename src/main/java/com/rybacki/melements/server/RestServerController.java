@@ -52,9 +52,9 @@ public class RestServerController {
     //opis
     //poprawic nazwy metod
 
-    //zrobic z endpointa propertisa
     //przenisc default locale do propertisow
     //przenisc port na ktorym startuje do propertisow
 
-    //formmater kodu nie działa
+    //dodać test kolejności nodów w jsonie
+
 }

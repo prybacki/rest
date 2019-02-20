@@ -53,8 +53,6 @@ public class RestServerController {
     //poprawic nazwy metod
 
     //przenisc default locale do propertisow
-    //przenisc port na ktorym startuje do propertisow
-
     //dodać test kolejności nodów w jsonie
 
 }

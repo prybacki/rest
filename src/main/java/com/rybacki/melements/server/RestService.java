@@ -1,6 +1,6 @@
 package com.rybacki.melements.server;
 
-import com.rybacki.melements.client.RestClient;
+import com.rybacki.melements.client.GithubRestClient;
 import com.rybacki.melements.server.responses.CorrectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,24 +18,20 @@ public class RestService {
     @Value("${github.endpoint}")
     private String githubEndpoint;
 
-    private final RestClient client;
+    private final GithubRestClient client;
 
     private final Mapper mapper;
 
     @Autowired
-    public RestService(RestClient client, Mapper mapper) {
+    public RestService(GithubRestClient client, Mapper mapper) {
         this.client = client;
         this.mapper = mapper;
     }
 
     public CorrectResponse getRepositoryDetails(String owner, String repositoryName, Locale locale) throws HttpStatusCodeException, ResourceAccessException {
-        URI uri = generateURL(owner, repositoryName);
+        URI uri = UriComponentsBuilder.newInstance().scheme("https").host(githubEndpoint).pathSegment("repos", owner,
+                repositoryName).build().toUri();
         return mapper.gitHubResponseToRestServiceResponse(client.getRepositoryDetails(uri),
                 locale);
-    }
-
-    private URI generateURL(String owner, String repositoryName) {
-        return UriComponentsBuilder.newInstance()
-                .scheme("https").host(githubEndpoint).pathSegment("repos", owner, repositoryName).build().toUri();
     }
 }

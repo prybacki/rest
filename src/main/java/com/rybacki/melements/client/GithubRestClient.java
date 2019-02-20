@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 
 @Service
-public class RestClient {
+public class GithubRestClient {
 
     @Autowired
     private RestTemplate restTemplate;

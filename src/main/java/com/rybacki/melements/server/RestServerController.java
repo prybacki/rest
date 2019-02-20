@@ -46,6 +46,6 @@ public class RestServerController {
         return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
     }
 
-    //dodać test kolejności nodów w jsonie
-
+    //TODO
+    //przeniesc metoda defaultowa z mappera interface do serwisu
 }

@@ -187,4 +187,23 @@ public class End2EndTest {
         mockServer.verify();
         assertEquals(jsonMapper.writeValueAsString(expectedResponse), result.getResponseBody());
     }
+
+    @Test
+    public void shouldCorrectResponseIsInProperOrder() {
+        String expectedResponse = "{\"fullName\":\"octocat/boysenberry-repo-1\"," +
+                "\"description\":\"Testing\"," +
+                "\"cloneUrl\":\"https://github.com/octocat/boysenberry-repo-1.git\"," +
+                "\"stars\":0," +
+                "\"createdAt\":\"May 10, 2018\"}";
+        mockServer.expect(requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond(withSuccess(MOCK_SERVER_SUCCESS_RESPONSE,
+                MediaType.APPLICATION_JSON_UTF8));
+
+        EntityExchangeResult<String> result = webClient.get()
+                .uri(REQUEST_URL)
+                .exchange().expectStatus().isOk()
+                .expectBody(String.class).returnResult();
+
+        mockServer.verify();
+        assertEquals(expectedResponse, result.getResponseBody());
+    }
 }

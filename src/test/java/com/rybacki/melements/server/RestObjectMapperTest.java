@@ -39,7 +39,7 @@ public class RestObjectMapperTest {
         checkMapping(Locale.US, EXPECTED_CREATED_AT_US);
     }
 
-    private void checkMapping(Locale locale, String expectedDate){
+    private void checkMapping(Locale locale, String expectedDate) {
         GitHubRepository entity = new GitHubRepository(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
                 CREATED_AT);
 

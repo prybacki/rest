@@ -1,10 +1,14 @@
 package com.rybacki.melements.server;
 
+import com.rybacki.melements.client.GitHubRepository;
 import com.rybacki.melements.client.GithubRestClient;
 import com.rybacki.melements.server.responses.CorrectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -12,24 +16,30 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.Locale;
 
-@Component
+@Service
 public class RestService {
 
     private final GithubRestClient client;
-    private final RestObjectMapper myMapper;
+    private final RestObjectMapper restObjectMapper;
 
     @Value("${github.endpoint}")
     private String githubEndpoint;
 
     @Autowired
-    public RestService(GithubRestClient client, RestObjectMapper myMapper) {
+    public RestService(GithubRestClient client, RestObjectMapper restObjectMapper) {
         this.client = client;
-        this.myMapper = myMapper;
+        this.restObjectMapper = restObjectMapper;
     }
 
     CorrectResponse getRepositoryDetails(String owner, String repositoryName, Locale locale) throws HttpStatusCodeException, ResourceAccessException {
         URI uri = UriComponentsBuilder.newInstance().scheme("https").host(githubEndpoint).pathSegment("repos", owner,
                 repositoryName).build().toUri();
-        return myMapper.gitHubToRestService(client.getRepositoryDetails(uri), locale);
+        ResponseEntity<GitHubRepository> response = client.getRepositoryDetails(uri);
+
+        if (response.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
+            throw new HttpClientErrorException(HttpStatus.NO_CONTENT, HttpStatus.NO_CONTENT.getReasonPhrase());
+        }
+        return restObjectMapper.gitHubToRestService(response.getBody(), locale);
+
     }
 }

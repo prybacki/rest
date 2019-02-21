@@ -1,5 +1,6 @@
 package com.rybacki.melements.server;
 
+import com.rybacki.melements.client.GitHubRepository;
 import com.rybacki.melements.client.GithubRestClient;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,11 +20,17 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class RestServiceTest {
     private static String TEST_OWNER = "octocat";
     private static String TEST_REPOSITORY_NAME = "boysenberry-repo-1";
-    RestService sut;
+
+    private RestService sut;
+
     @Mock
     private GithubRestClient client;
+
     @Mock
     private RestObjectMapper restObjectMapper;
+
+    @Mock
+    ResponseEntity<GitHubRepository> responseEntity;
 
     @Before
     public void setUp() {
@@ -33,7 +40,6 @@ public class RestServiceTest {
 
     @Test
     public void shouldReturnCorrectGitHubEndpointUrl() {
-        ResponseEntity responseEntity = mock(ResponseEntity.class);
         when(client.getRepositoryDetails(any())).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
 
@@ -47,11 +53,9 @@ public class RestServiceTest {
 
     @Test(expected = HttpClientErrorException.class)
     public void shouldExceptionWhenClientReturnNoContent() {
-        ResponseEntity responseEntity = mock(ResponseEntity.class);
-        when(client.getRepositoryDetails(any())).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
+        when(client.getRepositoryDetails(any())).thenReturn(responseEntity);
 
-        RestService sut = new RestService(client, restObjectMapper);
         sut.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME, Locale.US);
     }
 }

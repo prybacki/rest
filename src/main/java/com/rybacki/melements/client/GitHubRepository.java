@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @Getter
-public class GitHubRepositoryDetails {
+public class GitHubRepository {
 
     @JsonProperty("full_name")
     private String fullName;

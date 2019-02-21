@@ -29,9 +29,8 @@ public class RestServerController {
         return service.getRepositoryDetails(owner, repositoryName, locale);
     }
 
-    @RequestMapping(value = "/**", method = {RequestMethod.POST, RequestMethod.DELETE, RequestMethod.HEAD,
-            RequestMethod.OPTIONS, RequestMethod.PATCH, RequestMethod.PUT, RequestMethod.TRACE})
-    public ResponseEntity<ErrorResponse> onNotSupportMethod() {
+    @RequestMapping(value = "/**")
+    public ResponseEntity<ErrorResponse> onNotSupportedMethod() {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), HttpStatus.METHOD_NOT_ALLOWED.value()));
     }
 

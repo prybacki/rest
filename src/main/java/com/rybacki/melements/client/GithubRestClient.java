@@ -26,15 +26,14 @@ public class GithubRestClient {
         return builder.build();
     }
 
-    public GitHubRepositoryDetails getRepositoryDetails(URI uri) throws HttpStatusCodeException,
+    public GitHubRepository getRepositoryDetails(URI uri) throws HttpStatusCodeException,
             ResourceAccessException {
         RequestEntity request = RequestEntity.get(uri).accept(MediaType.APPLICATION_JSON).build();
-        ResponseEntity<GitHubRepositoryDetails> result = restTemplate.exchange(request, GitHubRepositoryDetails.class);
+        ResponseEntity<GitHubRepository> result = restTemplate.exchange(request, GitHubRepository.class);
 
-        if (result.getStatusCode().value() == HttpStatus.NO_CONTENT.value()) {
+        if (result.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             throw new HttpClientErrorException(HttpStatus.NO_CONTENT, HttpStatus.NO_CONTENT.getReasonPhrase());
-        } else {
-            return result.getBody();
         }
+        return result.getBody();
     }
 }

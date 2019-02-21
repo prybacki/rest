@@ -1,6 +1,6 @@
 package com.rybacki.melements.server;
 
-import com.rybacki.melements.client.GitHubRepositoryDetails;
+import com.rybacki.melements.client.GitHubRepository;
 import com.rybacki.melements.server.responses.CorrectResponse;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +40,10 @@ public class RestObjectMapperTest {
     }
 
     private void checkMapping(Locale locale, String expectedDate){
-        GitHubRepositoryDetails entity = new GitHubRepositoryDetails(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
+        GitHubRepository entity = new GitHubRepository(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
                 CREATED_AT);
 
-        CorrectResponse expectedResponse = sut.gitHubResponseToRestServiceResponse(entity, locale);
+        CorrectResponse expectedResponse = sut.gitHubToRestService(entity, locale);
 
         assertEquals("Incorrect full name", entity.getFullName(), expectedResponse.getFullName());
         assertEquals("Incorrect description", entity.getDescription(), expectedResponse.getDescription());

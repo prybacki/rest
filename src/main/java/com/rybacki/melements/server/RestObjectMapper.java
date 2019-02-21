@@ -1,6 +1,6 @@
 package com.rybacki.melements.server;
 
-import com.rybacki.melements.client.GitHubRepositoryDetails;
+import com.rybacki.melements.client.GitHubRepository;
 import com.rybacki.melements.server.responses.CorrectResponse;
 import org.mapstruct.*;
 
@@ -15,14 +15,14 @@ public abstract class RestObjectMapper {
     @Mapping(source = "description", target = "description")
     @Mapping(source = "cloneUrl", target = "cloneUrl")
     @Mapping(source = "stars", target = "stars")
-    abstract CorrectResponse gitHubResponseToRestServiceResponse(GitHubRepositoryDetails gitHubRepositoryDetails,
-                                                        @Context Locale locale);
+    abstract CorrectResponse gitHubToRestService(GitHubRepository gitHubRepository,
+                                                 @Context Locale locale);
 
     @AfterMapping
-    void formatCreatedAt(GitHubRepositoryDetails gitHubRepositoryDetails,
+    void formatCreatedAt(GitHubRepository gitHubRepository,
                          @MappingTarget CorrectResponse correctResponse,
                          @Context Locale locale) {
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
-        correctResponse.setCreatedAt(gitHubRepositoryDetails.getCreatedAt().format(pattern));
+        correctResponse.setCreatedAt(gitHubRepository.getCreatedAt().format(pattern));
     }
 }

@@ -30,6 +30,6 @@ public class RestService {
     CorrectResponse getRepositoryDetails(String owner, String repositoryName, Locale locale) throws HttpStatusCodeException, ResourceAccessException {
         URI uri = UriComponentsBuilder.newInstance().scheme("https").host(githubEndpoint).pathSegment("repos", owner,
                 repositoryName).build().toUri();
-        return myMapper.gitHubResponseToRestServiceResponse(client.getRepositoryDetails(uri), locale);
+        return myMapper.gitHubToRestService(client.getRepositoryDetails(uri), locale);
     }
 }

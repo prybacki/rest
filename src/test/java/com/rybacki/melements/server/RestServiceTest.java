@@ -37,7 +37,7 @@ public class RestServiceTest {
     }
 
     @Test
-    public void shouldReturnCorrectGitHubRepositoryUrl() {
+    public void shouldReturnCorrectGitHubEndpointUrl() {
         sut.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME, Locale.US);
 
         ArgumentCaptor<URI> argument = ArgumentCaptor.forClass(URI.class);

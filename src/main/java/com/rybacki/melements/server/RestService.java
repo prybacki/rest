@@ -22,13 +22,14 @@ public class RestService {
     private final GithubRestClient client;
     private final RestObjectMapper restObjectMapper;
 
-    @Value("${github.endpoint}")
     private String githubEndpoint;
 
     @Autowired
-    public RestService(GithubRestClient client, RestObjectMapper restObjectMapper) {
+    public RestService(GithubRestClient client, RestObjectMapper restObjectMapper,
+                       @Value("${github.endpoint}") String githubEndpoint) {
         this.client = client;
         this.restObjectMapper = restObjectMapper;
+        this.githubEndpoint = githubEndpoint;
     }
 
     CorrectResponse getRepositoryDetails(String owner, String repositoryName, Locale locale) throws HttpStatusCodeException, ResourceAccessException {

@@ -13,29 +13,28 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.net.URI;
 import java.util.Locale;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class RestServiceTest {
     private static String TEST_OWNER = "octocat";
     private static String TEST_REPOSITORY_NAME = "boysenberry-repo-1";
+    private static String GITHUB_ENDPONIT = "api.github.com";
 
     private RestService sut;
 
     @Mock
+    ResponseEntity<GitHubRepository> responseEntity;
+    @Mock
     private GithubRestClient client;
-
     @Mock
     private RestObjectMapper restObjectMapper;
-
-    @Mock
-    ResponseEntity<GitHubRepository> responseEntity;
 
     @Before
     public void setUp() {
         initMocks(this);
-        sut = new RestService(client, restObjectMapper);
+        sut = new RestService(client, restObjectMapper, GITHUB_ENDPONIT);
     }
 
     @Test
@@ -47,8 +46,8 @@ public class RestServiceTest {
 
         ArgumentCaptor<URI> argument = ArgumentCaptor.forClass(URI.class);
         verify(client).getRepositoryDetails(argument.capture());
-        assertTrue(argument.getValue().toString().startsWith("https:") && argument.getValue().toString().endsWith(
-                "/repos/octocat/boysenberry-repo-1"));
+        assertEquals("https://" + GITHUB_ENDPONIT + "/repos/octocat/boysenberry-repo-1",
+                argument.getValue().toString());
     }
 
     @Test(expected = HttpClientErrorException.class)

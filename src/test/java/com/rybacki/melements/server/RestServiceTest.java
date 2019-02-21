@@ -51,7 +51,7 @@ public class RestServiceTest {
     }
 
     @Test(expected = HttpClientErrorException.class)
-    public void shouldExceptionWhenClientReturnNoContent() {
+    public void shouldExceptionWhenIsReturningNoContent() {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         when(client.getRepositoryDetails(any())).thenReturn(responseEntity);
 

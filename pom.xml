@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
@@ -21,6 +21,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skip.e2e.tests>true</skip.e2e.tests>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
+        <org.spockframework.version>1.2-groovy-2.5</org.spockframework.version>
+        <org.apache.maven.plugin.version>2.22.1</org.apache.maven.plugin.version>
     </properties>
 
     <dependencies>
@@ -62,7 +64,13 @@
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>1.2-groovy-2.5</version>
+            <version>${org.spockframework.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-spring</artifactId>
+            <version>${org.spockframework.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -91,7 +99,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.1</version>
+                <version>${org.apache.maven.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>e2e-tests</id>
@@ -111,7 +119,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.1</version>
+                <version>${org.apache.maven.plugin.version}</version>
                 <configuration>
                     <excludes>
                         <exclude>**/e2e/*.java</exclude>

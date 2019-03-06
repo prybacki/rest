@@ -8,11 +8,10 @@ import spock.lang.Subject
 
 import java.time.LocalDate
 
-import static org.junit.Assert.assertEquals
+class RestObjectMapperTest extends Specification {
 
-class RestObjectMapperTest extends Specification{
-
-    @Subject def sut = Mappers.getMapper(RestObjectMapper.class)
+    @Subject
+    def sut = Mappers.getMapper(RestObjectMapper.class)
 
     def FULL_NAME = "octocat/boysenberry-repo-1"
     def DESCRIPTION = "Testing"

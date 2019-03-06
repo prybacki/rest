@@ -36,12 +36,12 @@ public class RestServerController {
 
     @ExceptionHandler(HttpStatusCodeException.class)
     public ResponseEntity<ErrorResponse> onHttpClientErrorException(HttpStatusCodeException ex) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(ex.getStatusCode().getReasonPhrase(),
+        return ResponseEntity.status(ex.getStatusCode()).body(new ErrorResponse(ex.getStatusCode().getReasonPhrase(),
                 ex.getStatusCode().value()));
     }
 
     @ExceptionHandler(ResourceAccessException.class)
     public ResponseEntity<ErrorResponse> onResourceAccessException() {
-        return ResponseEntity.status(HttpStatus.OK).body(new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(new ErrorResponse(HttpStatus.BAD_GATEWAY.getReasonPhrase(), HttpStatus.BAD_GATEWAY.value()));
     }
 }

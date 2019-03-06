@@ -21,6 +21,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.springframework.test.web.client.ExpectedCount.never;
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -102,7 +103,7 @@ public class End2EndTest {
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().isOk()
+                .exchange().expectStatus().is5xxServerError()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();
@@ -117,7 +118,7 @@ public class End2EndTest {
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().isOk()
+                .exchange().expectStatus().isBadRequest()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();
@@ -132,7 +133,7 @@ public class End2EndTest {
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().isOk()
+                .exchange().expectStatus().isNotFound()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();
@@ -159,12 +160,12 @@ public class End2EndTest {
         mockServer.expect(once(), requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond((response) -> {
             throw new ResourceAccessException("Connection reset");
         });
-        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value());
+        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.BAD_GATEWAY.getReasonPhrase(),
+                HttpStatus.BAD_GATEWAY.value());
 
         EntityExchangeResult<String> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().isOk()
+                .exchange().expectStatus().is5xxServerError()
                 .expectBody(String.class).returnResult();
 
         mockServer.verify();
@@ -172,18 +173,15 @@ public class End2EndTest {
     }
 
     @Test
-    public void shouldErrorResponseWhenNoContent() throws JsonProcessingException {
+    public void shouldErrorResponseWhenNoContent() {
         mockServer.expect(requestTo(MOCK_SERVER_REQUEST_URL)).andExpect(method(HttpMethod.GET)).andRespond(withStatus(HttpStatus.NO_CONTENT));
-        ErrorResponse expectedResponse = new ErrorResponse(HttpStatus.NO_CONTENT.getReasonPhrase(),
-                HttpStatus.NO_CONTENT.value());
 
-        EntityExchangeResult<String> result = webClient.get()
+        EntityExchangeResult<byte[]> result = webClient.get()
                 .uri(REQUEST_URL)
-                .exchange().expectStatus().isOk()
-                .expectBody(String.class).returnResult();
+                .exchange().expectStatus().isNoContent().expectBody().returnResult();
 
         mockServer.verify();
-        assertEquals(jsonMapper.writeValueAsString(expectedResponse), result.getResponseBody());
+        assertNull(result.getResponseBody());
     }
 
     @Test

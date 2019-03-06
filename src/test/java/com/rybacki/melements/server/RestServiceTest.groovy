@@ -9,6 +9,7 @@ import org.mockito.Mock
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.HttpClientErrorException
+import spock.lang.FailsWith
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -51,11 +52,12 @@ class RestServiceTest extends Specification{
         }
     }
 
-    @Test(expected = HttpClientErrorException.class)
-    public void shouldExceptionWhenIsReturningNoContent() {
-        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT)
-        when(client.getRepositoryDetails(any())).thenReturn(responseEntity)
+    @FailsWith(HttpClientErrorException)
+    def shouldExceptionWhenIsReturningNoContent() {
+        given:
+        responseEntity.getStatusCode() >> HttpStatus.NO_CONTENT
 
+        expect:
         sut.getRepositoryDetails(TEST_OWNER, TEST_REPOSITORY_NAME, Locale.US)
     }
 }

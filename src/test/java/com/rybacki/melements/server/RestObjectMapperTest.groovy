@@ -3,6 +3,7 @@ package com.rybacki.melements.server
 import com.rybacki.melements.client.GitHubRepository
 import com.rybacki.melements.server.responses.CorrectResponse
 import org.mapstruct.factory.Mappers
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -19,38 +20,30 @@ class RestObjectMapperTest extends Specification {
     def STARS = 0
     def CREATED_AT = LocalDate.of(2018, 5, 10)
 
+    @Shared
     def EXPECTED_CREATED_AT_GERMANY = "10.05.2018"
+    @Shared
     def EXPECTED_CREATED_AT_US = "May 10, 2018"
 
-    def shouldReturnCorrectResponseWhenLocaleIsGermany() {
+    def shouldReturnCorrectResponseWhenLocaleIsSet() {
         given:
         GitHubRepository entity = new GitHubRepository(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
                 CREATED_AT)
 
         when:
-        CorrectResponse expectedResponse = sut.gitHubToRestService(entity, Locale.GERMANY)
+        CorrectResponse actual = sut.gitHubToRestService(entity, locale)
 
         then:
-        entity.getFullName() == expectedResponse.getFullName()
-        entity.getDescription() == expectedResponse.getDescription()
-        entity.getCloneUrl() == expectedResponse.getCloneUrl()
-        entity.getStars() == expectedResponse.getStars()
-        EXPECTED_CREATED_AT_GERMANY == expectedResponse.getCreatedAt()
-    }
+        FULL_NAME == actual.getFullName()
+        DESCRIPTION == actual.getDescription()
+        CLONE_URL == actual.getCloneUrl()
+        STARS == actual.getStars()
+        expectedCreatedAt == actual.getCreatedAt()
 
-    def shouldReturnCorrectResponseWhenLocaleIsUs() {
-        given:
-        GitHubRepository entity = new GitHubRepository(FULL_NAME, DESCRIPTION, CLONE_URL, STARS,
-                CREATED_AT)
+        where:
+        locale         | expectedCreatedAt
+        Locale.GERMANY | EXPECTED_CREATED_AT_GERMANY
+        Locale.US      | EXPECTED_CREATED_AT_US
 
-        when:
-        CorrectResponse expectedResponse = sut.gitHubToRestService(entity, Locale.US)
-
-        then:
-        entity.getFullName() == expectedResponse.getFullName()
-        entity.getDescription() == expectedResponse.getDescription()
-        entity.getCloneUrl() == expectedResponse.getCloneUrl()
-        entity.getStars() == expectedResponse.getStars()
-        EXPECTED_CREATED_AT_US == expectedResponse.getCreatedAt()
     }
 }

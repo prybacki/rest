@@ -1,7 +1,7 @@
-package com.rybacki.melements.server
+package com.rybacki.rest.server
 
 
-import com.rybacki.melements.client.GithubRestClient
+import com.rybacki.rest.client.GithubRestClient
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.HttpClientErrorException

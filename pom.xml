@@ -9,11 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.rybacki</groupId>
-    <artifactId>melements</artifactId>
+    <artifactId>rest</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>melements</name>
-    <description>Recruitment task for mElements</description>
+    <name>rest</name>
+    <description>Rest proxy server</description>
 
     <properties>
         <java.version>11</java.version>

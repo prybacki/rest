@@ -1,4 +1,4 @@
-package com.rybacki.melements.client;
+package com.rybacki.rest.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

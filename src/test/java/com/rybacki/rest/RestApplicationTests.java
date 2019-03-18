@@ -1,8 +1,8 @@
-package com.rybacki.melements;
+package com.rybacki.rest;
 
 import org.junit.Test;
 
-public class MelementsApplicationTests {
+public class RestApplicationTests {
 
     @Test
     public void contextLoads() {

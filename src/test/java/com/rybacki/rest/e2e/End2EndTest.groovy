@@ -1,8 +1,8 @@
-package com.rybacki.melements.e2e
+package com.rybacki.rest.e2e
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.rybacki.melements.server.responses.CorrectResponse
-import com.rybacki.melements.server.responses.ErrorResponse
+import com.rybacki.rest.server.responses.CorrectResponse
+import com.rybacki.rest.server.responses.ErrorResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod

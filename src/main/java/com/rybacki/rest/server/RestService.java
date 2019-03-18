@@ -1,8 +1,8 @@
-package com.rybacki.melements.server;
+package com.rybacki.rest.server;
 
-import com.rybacki.melements.client.GitHubRepository;
-import com.rybacki.melements.client.GithubRestClient;
-import com.rybacki.melements.server.responses.CorrectResponse;
+import com.rybacki.rest.client.GitHubRepository;
+import com.rybacki.rest.client.GithubRestClient;
+import com.rybacki.rest.server.responses.CorrectResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

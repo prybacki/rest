@@ -1,4 +1,4 @@
-package com.rybacki.melements.server.responses;
+package com.rybacki.rest.server.responses;
 
 import lombok.Data;
 

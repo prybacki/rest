@@ -1,3 +1,6 @@
+Requirements:
+------------------------- 
+-------------------------
 Create a simple REST service which will return details of given Github repository. Details should include:
 * full name of repository
 * description of repository
@@ -17,3 +20,8 @@ GET /repositories/{owner}/{repository­name}
 }
 ```
 GitHub API reference can be found at: https://developer.github.com/v3/.
+
+Remarks:
+------------------------- 
+-------------------------
+Groovy spock test is duplicated by Junit test. This is intentional and made only for illustrative purposes.
